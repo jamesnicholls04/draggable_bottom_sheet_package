@@ -32,6 +32,8 @@ class DraggableBottomSheet extends StatefulWidget {
   /// Scroll direction of the sheet
   final Axis scrollDirection;
 
+  final double scrollSensitivity;
+
   DraggableBottomSheet({
     this.alignment = Alignment.bottomLeft,
     @required this.backgroundWidget,
@@ -42,6 +44,7 @@ class DraggableBottomSheet extends StatefulWidget {
     this.minExtent = 10,
     @required this.previewChild,
     this.scrollDirection = Axis.vertical,
+    this.scrollSensitivity = 1,
   });
 
   @override
@@ -80,7 +83,8 @@ class _DraggableBottomSheetState extends State<DraggableBottomSheet> {
           child: GestureDetector(
             onVerticalDragUpdate: (details) {
               if (widget.scrollDirection == Axis.horizontal) return;
-              newHeight = currentHeight - details.delta.dy;
+              newHeight =
+                  currentHeight - widget.scrollSensitivity * details.delta.dy;
               if (newHeight > widget.minExtent &&
                   newHeight < widget.maxExtent) {
                 setState(() => currentHeight = newHeight);
@@ -88,7 +92,8 @@ class _DraggableBottomSheetState extends State<DraggableBottomSheet> {
             },
             onHorizontalDragUpdate: (details) {
               if (widget.scrollDirection == Axis.vertical) return;
-              newHeight = currentHeight + details.delta.dx;
+              newHeight =
+                  currentHeight + widget.scrollSensitivity * details.delta.dx;
               if (newHeight > widget.minExtent &&
                   newHeight < widget.maxExtent) {
                 setState(() => currentHeight = newHeight);
